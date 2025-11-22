@@ -1,0 +1,51 @@
+{
+  "timestamp": "20251115_005506",
+  "num_episodes": 5,
+  "episodes": [
+    {
+      "success": false,
+      "steps": 500,
+      "distance": 500.0,
+      "time": 325.0625674724579,
+      "efficiency": 6.0,
+      "path_length": 501
+    },
+    {
+      "success": false,
+      "steps": 500,
+      "distance": 500.0,
+      "time": 325.0131130218506,
+      "efficiency": 6.0,
+      "path_length": 501
+    },
+    {
+      "success": false,
+      "steps": 500,
+      "distance": 500.0,
+      "time": 325.0773642063141,
+      "efficiency": 6.0,
+      "path_length": 501
+    },
+    {
+      "success": false,
+      "steps": 500,
+      "distance": 500.0,
+      "time": 324.9920234680176,
+      "efficiency": 6.0,
+      "path_length": 501
+    },
+    {
+      "success": false,
+      "steps": 500,
+      "distance": 500.0,
+      "time": 324.8481786251068,
+      "efficiency": 6.0,
+      "path_length": 501
+    }
+  ],
+  "summary": {
+    "success_rate": 0.0,
+    "avg_steps": 0,
+    "avg_efficiency": 0
+  }
+}

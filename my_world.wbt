@@ -1,0 +1,29 @@
+#VRML_SIM R2023b utf8
+# A simple, robust world with an arena and one robot
+
+# This line is REQUIRED for the e-puck
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/gctronic/e-puck/protos/E-puck.proto"
+
+# This is the NEW line that fixes the RectangleArena error
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/RectangleArena.proto"
+
+WorldInfo {
+  basicTimeStep 16
+}
+Viewpoint {
+  # This camera is looking down from a high position
+  position -2 3 2
+  orientation -0.55 0.8 0.25 2.1
+}
+Background {
+  skyColor [0.4 0.7 1]
+}
+RectangleArena {
+  floorSize 5 5
+}
+# ... (other world stuff) ...
+
+E-puck {
+  translation 0 0.02 0
+  controller "simple_mover"  # <-- CHANGE THIS LINE
+}

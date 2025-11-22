@@ -1,0 +1,331 @@
+#VRML_SIM R2023b utf8
+
+WorldInfo {
+  title "Warehouse Maze"
+}
+
+Viewpoint {
+  fieldOfView 1.4
+  orientation -1 0 0 1.5708
+  position 0 30 0
+}
+
+Background {
+  skyColor [0.15 0.2 0.25]
+}
+
+DirectionalLight {
+  direction 0 -1 0
+  intensity 5
+  castShadows TRUE
+}
+
+# CHECKERED FLOOR - Black and white
+Solid {
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.9 0.9 0.9
+        roughness 0.8
+      }
+      geometry Plane {
+        size 16 16
+      }
+    }
+  ]
+  name "floor_white"
+}
+
+# DARK GRID LINES
+Transform {
+  translation 0 0.001 0
+  children [
+    DEF GRID_H Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.2 0.2 0.2
+        }
+      }
+      geometry Box {
+        size 16 0.001 0.05
+      }
+    }
+  ]
+}
+
+# Multiple grid lines (simplified - just a few key ones)
+Transform {
+  translation -7 0.001 0
+  children [ USE GRID_H ]
+}
+Transform {
+  translation -3.5 0.001 0
+  children [ USE GRID_H ]
+}
+Transform {
+  translation 0 0.001 0
+  children [ USE GRID_H ]
+}
+Transform {
+  translation 3.5 0.001 0
+  children [ USE GRID_H ]
+}
+Transform {
+  translation 7 0.001 0
+  children [ USE GRID_H ]
+}
+
+DEF ROBOT Robot {
+  translation -7 0.2 -7
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.1 0.4 1
+        metalness 0.8
+        roughness 0.3
+      }
+      geometry Box {
+        size 0.8 0.4 1
+      }
+    }
+    GPS { name "gps" }
+    Compass { name "compass" }
+    HingeJoint {
+      jointParameters HingeJointParameters { anchor 0.5 -0.1 0.5 }
+      device [ RotationalMotor { name "left wheel motor" maxVelocity 20 } ]
+      endPoint Solid {
+        translation 0.5 -0.1 0.5
+        rotation 1 0 0 -1.5708
+        children [
+          DEF WHEEL Shape {
+            appearance PBRAppearance { baseColor 0.1 0.1 0.1 }
+            geometry Cylinder { height 0.12 radius 0.18 }
+          }
+        ]
+        name "lf"
+        boundingObject USE WHEEL
+        physics Physics { }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters { anchor 0.5 -0.1 -0.5 }
+      device [ RotationalMotor { name "left wheel motor2" maxVelocity 20 } ]
+      endPoint Solid {
+        translation 0.5 -0.1 -0.5
+        rotation 1 0 0 -1.5708
+        children [ USE WHEEL ]
+        name "lb"
+        boundingObject USE WHEEL
+        physics Physics { }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters { anchor -0.5 -0.1 0.5 }
+      device [ RotationalMotor { name "right wheel motor" maxVelocity 20 } ]
+      endPoint Solid {
+        translation -0.5 -0.1 0.5
+        rotation 1 0 0 -1.5708
+        children [ USE WHEEL ]
+        name "rf"
+        boundingObject USE WHEEL
+        physics Physics { }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters { anchor -0.5 -0.1 -0.5 }
+      device [ RotationalMotor { name "right wheel motor2" maxVelocity 20 } ]
+      endPoint Solid {
+        translation -0.5 -0.1 -0.5
+        rotation 1 0 0 -1.5708
+        children [ USE WHEEL ]
+        name "rb"
+        boundingObject USE WHEEL
+        physics Physics { }
+      }
+    }
+  ]
+  boundingObject Box { size 0.8 0.4 1 }
+  physics Physics { mass 10 }
+  controller "warehouse_controller"
+  supervisor TRUE
+  name "warehouse_robot"
+}
+
+DEF OBJECT Solid {
+  translation -4 0.4 -4
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 1 0.9 0
+        metalness 0.6
+        emissiveColor 0.3 0.3 0
+      }
+      geometry Box {
+        size 0.7 0.8 0.7
+      }
+    }
+  ]
+  name "package"
+  boundingObject Box { size 0.7 0.8 0.7 }
+}
+
+DEF DELIVERY_ZONE Solid {
+  translation 5 0.05 5
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.2 1 0.2
+        transparency 0.4
+        emissiveColor 0.1 0.3 0.1
+      }
+      geometry Box {
+        size 4.5 0.1 4.5
+      }
+    }
+  ]
+  name "delivery_zone"
+}
+
+DEF OBSTACLE1 Solid {
+  translation 0 0.6 -4
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 1 0.2 0.1
+        metalness 0.4
+      }
+      geometry Box {
+        size 1.1 1.2 1.1
+      }
+    }
+  ]
+  name "rack1"
+  boundingObject Box { size 1.1 1.2 1.1 }
+}
+
+DEF OBSTACLE2 Solid {
+  translation 0 0.6 -3
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 1 0.2 0.1
+        metalness 0.4
+      }
+      geometry Box {
+        size 1.1 1.2 1.1
+      }
+    }
+  ]
+  name "rack2"
+  boundingObject Box { size 1.1 1.2 1.1 }
+}
+
+DEF OBSTACLE3 Solid {
+  translation 0 0.6 -2
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 1 0.2 0.1
+        metalness 0.4
+      }
+      geometry Box {
+        size 1.1 1.2 1.1
+      }
+    }
+  ]
+  name "rack3"
+  boundingObject Box { size 1.1 1.2 1.1 }
+}
+
+DEF OBSTACLE4 Solid {
+  translation 0 0.6 2
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 1 0.2 0.1
+        metalness 0.4
+      }
+      geometry Box {
+        size 1.1 1.2 1.1
+      }
+    }
+  ]
+  name "rack4"
+  boundingObject Box { size 1.1 1.2 1.1 }
+}
+
+DEF OBSTACLE5 Solid {
+  translation 0 0.6 3
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 1 0.2 0.1
+        metalness 0.4
+      }
+      geometry Box {
+        size 1.1 1.2 1.1
+      }
+    }
+  ]
+  name "rack5"
+  boundingObject Box { size 1.1 1.2 1.1 }
+}
+
+DEF OBSTACLE6 Solid {
+  translation 0 0.6 4
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 1 0.2 0.1
+        metalness 0.4
+      }
+      geometry Box {
+        size 1.1 1.2 1.1
+      }
+    }
+  ]
+  name "rack6"
+  boundingObject Box { size 1.1 1.2 1.1 }
+}
+
+# BORDER WALLS
+Solid {
+  translation 0 0.5 -8
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.4 0.4 0.45 }
+      geometry Box { size 16 1 0.3 }
+    }
+  ]
+  name "wall_n"
+}
+Solid {
+  translation 0 0.5 8
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.4 0.4 0.45 }
+      geometry Box { size 16 1 0.3 }
+    }
+  ]
+  name "wall_s"
+}
+Solid {
+  translation -8 0.5 0
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.4 0.4 0.45 }
+      geometry Box { size 0.3 1 16 }
+    }
+  ]
+  name "wall_w"
+}
+Solid {
+  translation 8 0.5 0
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.4 0.4 0.45 }
+      geometry Box { size 0.3 1 16 }
+    }
+  ]
+  name "wall_e"
+}

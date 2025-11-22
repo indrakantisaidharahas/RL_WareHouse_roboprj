@@ -1,0 +1,159 @@
+#VRML_SIM R2023b utf8
+
+# Required definitions for the objects used
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/gctronic/e-puck/protos/E-puck.proto"
+
+WorldInfo {
+  basicTimeStep 16
+  contactProperties [
+    ContactProperties {
+      material1 "wheel"
+      material2 "floor"
+      coulombFriction [
+        0.5
+      ]
+    }
+  ]
+}
+
+Viewpoint {
+  orientation -0.55 0.8 0.25 2.1
+  position -2 3 2
+}
+
+TexturedBackground {
+}
+
+TexturedBackgroundLight {
+}
+
+RectangleArena {
+  floorSize 5 5
+  floorAppearance PBRAppearance {
+    baseColorMap ImageTexture {
+      url [
+        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/default/worlds/textures/parquetry.jpg"
+      ]
+    }
+    roughness 1
+    metalness 0
+  }
+  wallHeight 0.2
+}
+
+# The E-puck Robot with Lidar - MUST be at correct height
+DEF e-puck E-puck {
+  translation 0 0 0
+  rotation 0 1 0 0
+  controller "e_puck_rl_controller"
+  supervisor TRUE
+  turretSlot [
+    Lidar {
+      translation 0 0.02 0
+      rotation 0 1 0 0
+      horizontalResolution 360
+      fieldOfView 6.28319
+      verticalFieldOfView 0.1
+      numberOfLayers 1
+      near 0.1
+      minRange 0.1
+      maxRange 3.5
+      type "rotating"
+      name "LDS-01"
+    }
+  ]
+}
+
+# Add some obstacles for the robot to navigate around - ON THE GROUND
+DEF OBSTACLE_1 Solid {
+  translation 1 0.05 1
+  name "obstacle_1"
+  children [
+    DEF OBSTACLE1_SHAPE Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.2 0.2
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.3 0.1 0.3
+      }
+    }
+  ]
+  boundingObject USE OBSTACLE1_SHAPE
+  physics Physics {
+    density -1
+    mass 1
+  }
+}
+
+DEF OBSTACLE_2 Solid {
+  translation -1 0.05 -1
+  name "obstacle_2"
+  children [
+    DEF OBSTACLE2_SHAPE Shape {
+      appearance PBRAppearance {
+        baseColor 0.2 0.2 0.8
+        roughness 1
+        metalness 0
+      }
+      geometry Cylinder {
+        height 0.1
+        radius 0.2
+      }
+    }
+  ]
+  boundingObject USE OBSTACLE2_SHAPE
+  physics Physics {
+    density -1
+    mass 1
+  }
+}
+
+DEF OBSTACLE_3 Solid {
+  translation 1.5 0.05 -1.5
+  name "obstacle_3"
+  children [
+    DEF OBSTACLE3_SHAPE Shape {
+      appearance PBRAppearance {
+        baseColor 0.2 0.8 0.2
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.4 0.1 0.4
+      }
+    }
+  ]
+  boundingObject USE OBSTACLE3_SHAPE
+  physics Physics {
+    density -1
+    mass 1
+  }
+}
+
+DEF OBSTACLE_4 Solid {
+  translation -1.5 0.05 1.5
+  name "obstacle_4"
+  children [
+    DEF OBSTACLE4_SHAPE Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.2
+        roughness 1
+        metalness 0
+      }
+      geometry Cylinder {
+        height 0.1
+        radius 0.15
+      }
+    }
+  ]
+  boundingObject USE OBSTACLE4_SHAPE
+  physics Physics {
+    density -1
+    mass 1
+  }
+}
