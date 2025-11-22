@@ -20,3 +20,4 @@ Key Features
     
 <img width="2021" height="593" alt="Screenshot 2025-11-18 232651" src="https://github.com/user-attachments/assets/ac86a6fa-7627-48b1-9207-5e8ccbd899f1" />
 <img width="2019" height="1130" alt="Screenshot 2025-11-18 232629" src="https://github.com/user-attachments/assets/a185fb39-cd33-4722-a5ef-ea430007ec97" />
+Please explore the .gif and .mp4 files for ouptut
